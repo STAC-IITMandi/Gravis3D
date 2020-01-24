@@ -1,7 +1,9 @@
 from vpython import color,vector, mag2, mag, sphere
 from numpy import pi
 
-from play import G,dt
+G = 6.674*1e-11
+dt = 0.01  #for human eyes to percieve mo
+k = 10e-22
 
 class Body():
     '''
@@ -15,16 +17,21 @@ class Body():
         self.pos = pos or vector(0,0,0)
         self.velocity = velocity or vector(0,0,0)
         self.color = colour or color.orange
-        self.ball = sphere(pos = self.pos, radius = self.radius, color = self.color)
+        self.ball = sphere(pos = self.pos, radius = self.radius, color = self.color,
+                           make_trail=True, trail_type='points', interval=100, retain=50)
 
     def move(self):
         self.pos += self.velocity*dt
         self.ball.pos = self.pos
 
     def attract(self, attractor):
-        force = G*(self.mass*attractor.mass)/(mag2(attractor.pos - self.pos))*(attractor.pos - self.pos)
+        force = k*G*(self.mass*attractor.mass)/(mag2(attractor.pos - self.pos))
+        force *= (attractor.pos - self.pos).norm()
+        #print(force)
         self.velocity += force*dt
-        attractor.velocity -= force*dt
+        #attractor.velocity -= force*dt
+        #Sattractor.move()
+        self.move()
 
     def is_collision(self, other):
         if mag(self.pos-other.pos) <= mag(self.radius) + mag(other.radius) :
@@ -37,5 +44,3 @@ class Body():
         radius = (0.75*(1/pi)*(1/1408)*mass)*(1/3)
         velocity = (self.mass*self.velocity + other.mass*other.velocity)/(mass)
         return mass, radius, velocity
-
-#test_body = Body()
