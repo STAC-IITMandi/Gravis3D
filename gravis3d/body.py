@@ -1,9 +1,6 @@
 from vpython import color,vector, mag2, mag, sphere
 from numpy import pi
-
-G = 6.674*1e-11
-dt = 0.01  #for human eyes to percieve mo
-k = 10e-22
+from constants import G,k,dt
 
 class Body():
     '''
@@ -18,7 +15,7 @@ class Body():
         self.velocity = velocity or vector(0,0,0)
         self.color = colour or color.orange
         self.ball = sphere(pos = self.pos, radius = self.radius, color = self.color,
-                           make_trail=True, trail_type='points', interval=100, retain=50)
+                           make_trail=True, trail_type='points', interval=100, retain=20)
 
     def move(self):
         self.pos += self.velocity*dt

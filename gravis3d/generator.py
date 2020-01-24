@@ -1,7 +1,6 @@
 from body import Body
 from numpy.random import normal
 from vpython import *
-from time import sleep
 
 class Nbodies:
     """
@@ -25,8 +24,3 @@ class Nbodies:
                     self.bodies[i].attract(self.bodies[j])
                     #self.bodies[i].move()
             
-n = Nbodies(N = 22)
-sleep(10)
-while(1):
-    rate = 1000
-    n.update()
